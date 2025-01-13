@@ -95,6 +95,9 @@ lyme_pop <- left_join(lyme_clean, us_state_pop) |>
 #| eval: true
 #| echo: true
 # line chart ----
+# line chart ----
+ggplot(lyme_pop, aes(x = year, y = cases_per100k, group = state)) + 
+  geom_line()
 ```
 
 ### Alt 1: Avoid spaghetti plots 
@@ -107,11 +110,13 @@ lyme_pop <- left_join(lyme_clean, us_state_pop) |>
 
 # highlight one group ----
 ggplot(lyme_pop, aes(x = year, y = cases_per100k, group = state)) +
-  geom_line() 
+  geom_line() +
+  gghighlight::gghighlight(state == "New Jersey") 
 
 # highlight based on criteria ----
-ggplot(lyme_pop, aes(x = year, y = cases_per100k, group = state)) +
-  geom_line() 
+ggplot(lyme_pop, aes(x = year, y = cases_per100k, group = state, color = state)) +
+  geom_line() +
+  gghighlight::gghighlight(max(cases_per100k) > 100) #highlight every state that goes over 100
 ```
 
 ### Note 1: It's okay to cut the y-axis
@@ -134,11 +139,11 @@ lyme_pop |>
   filter(state == "Vermont") |> 
   ggplot(aes(x = year, y = cases_per100k, group = state)) +
   geom_line() +
-  scale_y_continuous(limits = c(0, NA))
+  scale_y_continuous(limits = c(0, NA)) # force y-axis orgin to 0
 ```
 
 ### Note 2: Consider aspect ratio
-
+- Aspect ratio = height to width ratio of plot 
 - here, 10 units on our x-axis (years 2010 - 2020), and ~175 units (case_per100k 0 to ~175) on our y-axis
 - ggplot automatically adjusts aspect ratio so that plot is easier to read 
 
@@ -165,6 +170,7 @@ lyme_pop |>
   ggplot(aes(x = year, y = cases_per100k, group = state)) +
   geom_line() +
   scale_y_continuous(breaks = seq(0, 190, by = 1)) 
+  # coord_fixed(ratio = 1) # each unit on y is the same as x --> we dont want this in this instance
 ```
 
 - ratios > 1: units on the y-axis longer than units on the x-axis (resulting in steeper slopes) 
@@ -177,7 +183,8 @@ lyme_pop |>
 lyme_pop |> 
   filter(state == "Vermont") |> 
   ggplot(aes(x = year, y = cases_per100k, group = state)) +
-  geom_line() 
+  geom_line() +
+  coord_fixed(ratio = 1/50) #1 unit of height = 50 units of width
 ```
 
 ## Area charts
@@ -188,8 +195,14 @@ lyme_pop |>
 #| eval: true
 #| echo: true
 # area chart of lyme disease incidence in NJ ----
-lyme_pop |> 
-  filter(state == "New Jersey")
+lyme_pop %>%  
+  filter(state == "New Jersey") %>%  
+  ggplot(aes(x = year, y = cases_per100k, group = state, fill = state)) +
+  geom_area() +
+  scale_fill_manual(values = c("#047C90")) +
+  scale_x_discrete(expand = c(0, NA)) + 
+  scale_y_continuous(expand = c(0, NA)) +
+  theme(legend.position = "none")
 ```
 
 ## Stacked area charts 
@@ -200,8 +213,10 @@ lyme_pop |>
 #| eval: true
 #| echo: true
 # stacked area chart ----
-lyme_pop |> 
-  filter(state %in% c("Maine", "Rhode Island", "New Hampshire", "Vermont")) 
+lyme_pop %>%  
+  filter(state %in% c("Maine", "Rhode Island", "New Hampshire", "Vermont")) |> 
+  ggplot(aes(x = year, y = cases_per100k, group = state, fill = state)) +
+  geom_area()
 ```
 
 ### Alt 1: proportional stacked area chart
@@ -215,7 +230,9 @@ lyme_pop |>
 lyme_pop |> 
   filter(state %in% c("Maine", "Rhode Island", "New Hampshire", "Vermont")) |> 
   ggplot(aes(x = year, y = cases_per100k, group = state, fill = state)) +
-  geom_area() 
+  geom_area(position = "fill") #default is stack
+
+# we can see the relative contributions of state count 
 ```
 
 ### Note 1: stacked area charts aren't great for looking at evolution of individual groups
@@ -229,7 +246,6 @@ lyme_pop |>
   filter(state %in% c("Maine", "Rhode Island", "New Hampshire", "Vermont")) |> 
   ggplot(aes(x = year, y = cases_per100k, group = state, fill = state)) +
   geom_area()
-
 # same data, but as a line chart & faceted by state ----
 lyme_pop |> 
   filter(state %in% c("Maine", "Rhode Island", "New Hampshire", "Vermont")) |> 
