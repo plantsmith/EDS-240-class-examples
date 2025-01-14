@@ -6,8 +6,8 @@ date: 2025-01-13
 toc: true
 ---
 
-::: {.callout-note}
-This template follows [lecture 2.3 slides](https://eds-240-data-viz.github.io/course-materials/lecture-slides/lecture2.3-evolution-slides.html#/title-slide){target="_blank}.
+::: callout-note
+This template follows [lecture 2.3 slides](https://eds-240-data-viz.github.io/course-materials/lecture-slides/lecture2.3-evolution-slides.html#/title-slide){target="\"_blank"}.
 :::
 
 ## Setup
@@ -89,7 +89,7 @@ lyme_pop <- left_join(lyme_clean, us_state_pop) |>
 
 ## Line graphs
 
-- show evolution of one or more numeric variables; similar to scatter plots but points are ordered (typically by x-axis value) and joined with straight line segments
+-   show evolution of one or more numeric variables; similar to scatter plots but points are ordered (typically by x-axis value) and joined with straight line segments
 
 ```{r}
 #| eval: true
@@ -100,7 +100,7 @@ ggplot(lyme_pop, aes(x = year, y = cases_per100k, group = state)) +
   geom_line()
 ```
 
-### Alt 1: Avoid spaghetti plots 
+### Alt 1: Avoid spaghetti plots
 
 ```{r}
 #| eval: true
@@ -143,9 +143,10 @@ lyme_pop |>
 ```
 
 ### Note 2: Consider aspect ratio
-- Aspect ratio = height to width ratio of plot 
-- here, 10 units on our x-axis (years 2010 - 2020), and ~175 units (case_per100k 0 to ~175) on our y-axis
-- ggplot automatically adjusts aspect ratio so that plot is easier to read 
+
+-   Aspect ratio = height to width ratio of plot
+-   here, 10 units on our x-axis (years 2010 - 2020), and \~175 units (case_per100k 0 to \~175) on our y-axis
+-   ggplot automatically adjusts aspect ratio so that plot is easier to read
 
 ```{r}
 #| eval: true
@@ -158,8 +159,8 @@ lyme_pop |>
   scale_y_continuous(breaks = seq(0, 190, by = 1)) 
 ```
 
-- we can fix the aspect ratio of our plot
-- `ratio` is expressed as `y / x` and is set to `1` by default (see grid lines)
+-   we can fix the aspect ratio of our plot
+-   `ratio` is expressed as `y / x` and is set to `1` by default (see grid lines)
 
 ```{r}
 #| eval: true
@@ -173,8 +174,8 @@ lyme_pop |>
   # coord_fixed(ratio = 1) # each unit on y is the same as x --> we dont want this in this instance
 ```
 
-- ratios > 1: units on the y-axis longer than units on the x-axis (resulting in steeper slopes) 
-- ratios < 1: units on the x-axis longer than units on the y-axis (resulting in shallower slopes)
+-   ratios \> 1: units on the y-axis longer than units on the x-axis (resulting in steeper slopes)
+-   ratios \< 1: units on the x-axis longer than units on the y-axis (resulting in shallower slopes)
 
 ```{r}
 #| eval: true
@@ -189,7 +190,7 @@ lyme_pop |>
 
 ## Area charts
 
-- similar to line chart; indicates change in a numeric variable through time, but the space between x-axis and line is shaded in
+-   similar to line chart; indicates change in a numeric variable through time, but the space between x-axis and line is shaded in
 
 ```{r}
 #| eval: true
@@ -205,9 +206,9 @@ lyme_pop %>%
   theme(legend.position = "none")
 ```
 
-## Stacked area charts 
+## Stacked area charts
 
-- show evolution of the whole + relative proportions of each group
+-   show evolution of the whole + relative proportions of each group
 
 ```{r}
 #| eval: true
@@ -217,11 +218,13 @@ lyme_pop %>%
   filter(state %in% c("Maine", "Rhode Island", "New Hampshire", "Vermont")) |> 
   ggplot(aes(x = year, y = cases_per100k, group = state, fill = state)) +
   geom_area()
+
+#represented as difference in size
 ```
 
 ### Alt 1: proportional stacked area chart
 
-- plot percentage contributions rather than absolute numbers on y-axis
+-   plot percentage contributions rather than absolute numbers on y-axis
 
 ```{r}
 #| eval: true
@@ -253,4 +256,4 @@ lyme_pop |>
   geom_line() +
   facet_wrap(~state)
 ```
-
+want to show groups though time --> line chart
