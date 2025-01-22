@@ -3,6 +3,7 @@ title: "discussion 2"
 format: html
 editor: visual
 ---
+
 ```{r}
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##                                    setup                                 ----
@@ -74,4 +75,3 @@ drought_clean %>%
 # scale_y_continuous(breaks = seq(0, 100, by = 10), 
 
 ```
-

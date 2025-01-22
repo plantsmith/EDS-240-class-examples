@@ -1,0 +1,45 @@
+---
+title: "Week 3 Discussion "
+format: html
+editor: visual
+---
+
+# Example 1:
+
+```{r}
+library(ggplot2)
+library(palmerpenguins)
+```
+
+1.  Copy the following code into your week3-discussion.qmd file and add code chunk options that: render the output (i.e. plot), but not the code suppress any warnings or messages
+2.  Add alt text using the fig-alt: code chunk option
+3.  “Inspect” your plot (right click \> Inspect) to verify that the alt attribute and text is added to the HTML
+
+```{r}
+#| eval: true # evaluate this code block (dont skip over it, run this code)
+#| echo: false # show output, dont show code
+#| message: false #hides any messages
+#| warning: false
+#| fig-cap: "histogram"
+#| fig-alt: " A histogram of penguin body masses where Gentoo penguins have body masses that are about 2000g larger than Adelie and Chinstrap penguins."
+
+
+ggplot(data = penguins, aes(x = body_mass_g, fill = species)) +
+  geom_histogram(alpha = 0.5, 
+                 position = "identity") +
+  scale_fill_manual(values = c("darkorange","purple","cyan4")) +
+  labs(x = "Body mass (g)",
+       y = "Frequency",
+       title = "Penguin body masses")
+```
+
+# Example 2:
+
+1.  Download this viz (right click \> Save Image As… \> save to your class repo)
+2.  Embed the viz in week3-discussion.qmd using Markdown syntax and add alt text
+
+![monthly](nyt-monthly-temp.png)(fig-alt = 'A dot plot of monthly global temperatures compared to the 20th-century average, where monthly global temperatures are increasing over time. Nearly every month since the mid-1970s is warmer than the 20th-century average, with 12 record-breaking hot months occurring between 2015-2023.')
+
+# Example 3:
+
+<img src="biodiversity-image.png" alt="A heatmap of global species observations where the highest concentration of observations occur in high-income countries, particularly in the USA and European nations." width="700px"/>
