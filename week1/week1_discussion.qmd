@@ -6,6 +6,7 @@ editor: visual
 ---
 
 ## 
+
 ```{r}
 # install.packages("here") # for reproducible, relative file paths
 # install.packages("janitor") # tools for cleaning dirty data
@@ -23,14 +24,13 @@ library("tidyverse")
 fracking <- read.csv(here("week1", "data", "registryupload_1.csv")) 
 ```
 
-
 ```{r}
 dim(fracking)
 str(fracking)
 ```
 
+Clean Fracking Data:
 
-Clean Fracking Data: 
 ```{r}
 fracking_clean <- 
   fracking %>%  
@@ -108,4 +108,3 @@ fracking_clean |>
     axis.title.y = element_blank()
     ) 
 ```
-
